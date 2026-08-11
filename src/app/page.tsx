@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { PageContact } from "@/components/PageContact";
 import { homeIntro, reelEmbedUrl, site } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 export default function HomePage() {
   return (
@@ -9,7 +10,7 @@ export default function HomePage() {
         <h1 className="home-hero__title">{site.displayName}</h1>
         <div className="home-hero__art">
           <Image
-            src="/images/hero-collage.png"
+            src={withBasePath("/images/hero-collage.png")}
             alt="Whimsical character collage by Lara Renaud"
             width={1200}
             height={900}
@@ -22,7 +23,7 @@ export default function HomePage() {
       <section className="home-intro">
         <div className="home-intro__portrait">
           <Image
-            src="/images/portrait.png"
+            src={withBasePath("/images/portrait.png")}
             alt="Portrait illustration of Lara Renaud"
             width={280}
             height={280}

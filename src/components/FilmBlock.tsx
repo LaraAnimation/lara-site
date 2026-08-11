@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { FilmEntry } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 export type { FilmEntry };
 
@@ -87,7 +88,7 @@ export function FilmBlock({ film }: FilmBlockProps) {
               {film.laurels.map((src) => (
                 <li key={src}>
                   <Image
-                    src={src}
+                    src={withBasePath(src)}
                     alt=""
                     width={220}
                     height={140}
@@ -99,7 +100,7 @@ export function FilmBlock({ film }: FilmBlockProps) {
           ) : film.laurelsImage ? (
             <div className="films-laurels-strip">
               <Image
-                src={film.laurelsImage}
+                src={withBasePath(film.laurelsImage)}
                 alt={film.laurelsAlt || `${film.title} festival selections`}
                 width={900}
                 height={360}

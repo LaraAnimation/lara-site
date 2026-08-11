@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { PageContact } from "@/components/PageContact";
 import { aboutBio, aboutCv } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 export const metadata: Metadata = {
   title: "About",
@@ -14,7 +15,7 @@ export default function AboutPage() {
         <div className="about-top__inner">
           <div className="about-portrait">
             <Image
-              src="/images/about/portrait.png"
+              src={withBasePath("/images/about/portrait.png")}
               alt="Portrait of Lara Renaud"
               width={720}
               height={1024}

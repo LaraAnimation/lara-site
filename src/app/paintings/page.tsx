@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Gallery } from "@/components/Gallery";
 import { PageContact } from "@/components/PageContact";
 import { paintings, paintingsIntro } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 export const metadata: Metadata = {
   title: "Paintings",
@@ -13,7 +14,7 @@ export default function PaintingsPage() {
     <div className="paintings-page">
       <section className="paintings-hero">
         <Image
-          src="/images/paintings/banner.png"
+          src={withBasePath("/images/paintings/banner.png")}
           alt="Paintings"
           width={1200}
           height={675}

@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { site } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 export function PageContact() {
   return (
     <section className="home-contact" id="contact-info">
       <Image
-        src="/images/contact-creature.png"
+        src={withBasePath("/images/contact-creature.png")}
         alt=""
         width={120}
         height={120}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FilmBlock } from "@/components/FilmBlock";
 import { PageContact } from "@/components/PageContact";
 import { films } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 export const metadata: Metadata = {
   title: "Films",
@@ -13,7 +14,7 @@ export default function FilmsPage() {
     <div className="films-page">
       <section className="films-banner">
         <Image
-          src="/images/films/banner.png"
+          src={withBasePath("/images/films/banner.png")}
           alt="Animation & Film"
           width={1200}
           height={675}

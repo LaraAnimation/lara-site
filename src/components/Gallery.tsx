@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Artwork } from "@/data/site";
+import { withBasePath } from "@/lib/paths";
 
 type GalleryProps = {
   items: Artwork[];
@@ -45,7 +46,7 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
               >
                 {item.image ? (
                   <Image
-                    src={item.image}
+                    src={withBasePath(item.image)}
                     alt={item.title}
                     width={600}
                     height={600}
@@ -108,7 +109,7 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
             {active.image ? (
               <div className="lightbox__photo">
                 <Image
-                  src={active.image}
+                  src={withBasePath(active.image)}
                   alt={active.title}
                   width={900}
                   height={900}
