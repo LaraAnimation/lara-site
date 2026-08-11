@@ -2,6 +2,10 @@
 
 Simple Next.js portfolio — replacement for the Wix site.
 
+## Live preview
+
+GitHub Pages: https://jacobbaqleh1.github.io/lara-site/
+
 ## Run locally
 
 ```bash
@@ -19,8 +23,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy (cheap / free)
 
-- Push to GitHub
-- Connect to [Cloudflare Pages](https://pages.cloudflare.com/), [Netlify](https://www.netlify.com/), or [Vercel](https://vercel.com/)
-- Point her domain at the host
+- This repo auto-deploys to GitHub Pages on every push to `main`
+- For production later: connect a fork to [Cloudflare Pages](https://pages.cloudflare.com/), [Netlify](https://www.netlify.com/), or [Vercel](https://vercel.com/) and point her domain there
 
 She only needs to pay for the domain (~$10–15/year). Hosting can be free for this site.

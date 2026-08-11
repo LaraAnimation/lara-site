@@ -16,7 +16,8 @@
   --font-display: var(--font-display);
   --font-ui: var(--font-ui);
   --font-body: var(--font-ui);
-  --site-bg: url("/images/site-bg.png");
+  /* Overridden in layout for GitHub Pages basePath */
+  --site-bg-image: url("/images/site-bg.png");
 }
 
 @theme inline {
@@ -175,7 +176,7 @@ img {
 /* Shared sketchbook background from live site */
 .site-sketch-bg {
   background-color: #ddd8e4;
-  background-image: var(--site-bg);
+  background-image: var(--site-bg-image);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -456,7 +457,7 @@ img {
 
 .paintings-body {
   background-color: #ddd8e4;
-  background-image: var(--site-bg);
+  background-image: var(--site-bg-image);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -518,7 +519,7 @@ img {
 .drawings-body {
   position: relative;
   background-color: #ddd8e4;
-  background-image: var(--site-bg);
+  background-image: var(--site-bg-image);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -541,7 +542,7 @@ img {
 /* Films page */
 .films-page {
   background-color: #ddd8e4;
-  background-image: var(--site-bg);
+  background-image: var(--site-bg-image);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -1026,7 +1027,7 @@ img {
   position: relative;
   padding: 2.5rem 1.25rem 3rem;
   background-color: #ddd8e4;
-  background-image: var(--site-bg);
+  background-image: var(--site-bg-image);
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;

@@ -26,9 +26,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const siteBg = `url("${basePath}/images/site-bg.png")`;
+
   return (
     <html lang="en" className={`${display.variable} ${ui.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
+      <body
+        className="min-h-full flex flex-col antialiased"
+        style={{ ["--site-bg-image" as string]: siteBg }}
+      >
         <Header />
         <main className="page">{children}</main>
         <footer className="site-footer">
