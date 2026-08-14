@@ -2,6 +2,9 @@
 
 Simple Next.js portfolio — replacement for the Wix site.
 
+## sketchboard
+https://miro.com/welcomeonboard/bGdBbzE2SXloRC9ZNzdjdy9yV2JUbU13d1IxNHBFUDB5bFVZYk1KaStlZEpTdkFLMHhEN1ZiQWNQMEZaNFdQYyt0WkpjZVI2TGpKYkIrZmk3TGhDOWpDVUppM1d4a0Q5ajJiQnJXOFJSZ0U2b2RhVml6MFNTUVRkNkJhZXRZTGNhWWluRVAxeXRuUUgwWDl3Mk1qRGVRPT0hdjE=?share_link_id=733462039744
+
 ## Live preview
 
 GitHub Pages: https://jacobbaqleh1.github.io/lara-site/
