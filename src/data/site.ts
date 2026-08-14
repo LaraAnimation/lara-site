@@ -1,3 +1,5 @@
+import { r2Url } from "@/lib/media";
+
 export const site = {
   name: "Lara Renee Renaud Animation",
   displayName: "Lara Renee Renaud Animation",
@@ -45,15 +47,11 @@ export type FilmEntry = {
   laurels?: string[];
 };
 
-/** Public R2 CDN base (no trailing slash) */
-export const r2PublicBase =
-  "https://pub-e83ddc13f9e64a72bb36b892aa9b8989.r2.dev";
-
 /** YouTube/Vimeo embed URL (optional). Prefer `reelVideoSrc` for R2-hosted files. */
 export const reelEmbedUrl = "";
 
 /** R2 object key or full public URL for the home / films reel */
-export const reelVideoSrc = `${r2PublicBase}/films/reel-2024-update3.mp4`;
+export const reelVideoSrc = r2Url("films/reel-2024-update3.mp4");
 
 export const films: FilmEntry[] = [
   {
@@ -61,7 +59,7 @@ export const films: FilmEntry[] = [
     title: "The Household",
     description:
       "Senior thesis project - a culmination of animation, video, sound. This emotional, storytelling piece leads the viewer through an abstract world depicting the trauma experienced by a little girl in a family tormented by alcoholism.",
-    videoSrc: `${r2PublicBase}/films/the-household.mp4`,
+    videoSrc: r2Url("films/the-household.mp4"),
     thumbnailLabel: "The Household",
   },
   {
@@ -69,7 +67,7 @@ export const films: FilmEntry[] = [
     title: "The Escape",
     description:
       "Junior film - a precursor to 'The HouseHold'. A personal project that grew out of life experiences and explored themes such as anxiety, trauma, depression and coping. An experimental piece, Lara explored different digital aesthetics and styles.",
-    videoSrc: `${r2PublicBase}/films/the-escape.mp4`,
+    videoSrc: r2Url("films/the-escape.mp4"),
     thumbnailLabel: "THE ESCAPE",
     reverse: true,
   },
@@ -78,7 +76,7 @@ export const films: FilmEntry[] = [
     title: "Merry",
     description:
       "Merry, 2022, is animated and co-directed by Lara Renaud and Quinn Kelly. Quinn Kelly is also responsible for sound design. The Poet Laurette of Vancouver BC 2022, Fiona Tinwei Lam wrote, narrated, commissioned, co-directed, and produced this film. Merry discusses plastic consumption and toxic consumerist culture around Christmas time.",
-    videoSrc: `${r2PublicBase}/films/merry.mp4`,
+    videoSrc: r2Url("films/merry.mp4"),
     thumbnailLabel: "Merry",
     festivals: [
       {
@@ -116,7 +114,7 @@ export const films: FilmEntry[] = [
     title: "Un/Write",
     description:
       "Un/Write, 2023, animated and co-directed by Lara Renaud and Quinn Kelly. Sound design also by Quinn Kelly. Written, commissioned, produced, vocalized and co-directed by the Poet Laureate of Vancouver BC, Fiona Tinwei Lam. This poetry film celebrates the idea of the deterioration and construction of creativity.",
-    videoSrc: `${r2PublicBase}/films/un-write.mp4`,
+    videoSrc: r2Url("films/un-write.mp4"),
     thumbnailLabel: "Un/Write",
     reverse: true,
     festivals: [
@@ -161,7 +159,7 @@ export const films: FilmEntry[] = [
     titleNote: "(Performed by Orchid Tooth)",
     description:
       "This is a live music video shot by the Video & Sound class of PNCA 2022. Each student then took the footage to create their own edits, this is Lara's. Lara also operated camera 1. (Worms eye close up shots)",
-    videoSrc: `${r2PublicBase}/films/paradox.mp4`,
+    videoSrc: r2Url("films/paradox.mp4"),
     thumbnailLabel: "ORCHID TOOTH — PARADOX",
     reverse: true,
   },
