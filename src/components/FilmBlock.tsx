@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { FilmEntry } from "@/data/site";
+import { R2Video } from "@/components/media/R2Video";
 import { withBasePath } from "@/lib/paths";
 
 export type { FilmEntry };
@@ -11,7 +12,13 @@ type FilmBlockProps = {
 export function FilmBlock({ film }: FilmBlockProps) {
   const media = (
     <div className="films-media">
-      {film.embedUrl ? (
+      {film.videoSrc ? (
+        <R2Video
+          src={film.videoSrc}
+          className="films-media__video"
+          aria-label={film.title}
+        />
+      ) : film.embedUrl ? (
         <iframe
           src={film.embedUrl}
           title={film.title}
@@ -84,14 +91,17 @@ export function FilmBlock({ film }: FilmBlockProps) {
           )}
 
           {film.laurels && film.laurels.length > 0 ? (
-            <ul className="films-laurels">
+            <ul
+              className="films-laurels"
+              aria-label={`${film.title} festival selections`}
+            >
               {film.laurels.map((src) => (
                 <li key={src}>
                   <Image
                     src={withBasePath(src)}
                     alt=""
-                    width={220}
-                    height={140}
+                    width={280}
+                    height={180}
                     className="films-laurels__img"
                   />
                 </li>

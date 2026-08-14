@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <section className="simple-page">
+    <section className="simple-page" data-page-hero>
       <h1>Contact</h1>
       <div className="contact-card">
         <p style={{ margin: "0 0 0.35rem", fontWeight: 800 }}>Contact Info</p>

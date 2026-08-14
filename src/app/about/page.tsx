@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="about-page">
-      <section className="about-top">
+      <section className="about-top" data-page-hero>
         <div className="about-top__inner">
           <div className="about-portrait">
             <Image

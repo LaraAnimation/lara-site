@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function DrawingsPage() {
   return (
     <div className="drawings-page">
-      <section className="drawings-hero">
+      <section className="drawings-hero" data-page-hero>
         <Image
           src={withBasePath("/images/drawings/banner.png")}
           alt="Drawings"
