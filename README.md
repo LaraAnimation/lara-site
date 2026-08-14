@@ -9,6 +9,9 @@ https://miro.com/welcomeonboard/bGdBbzE2SXloRC9ZNzdjdy9yV2JUbU13d1IxNHBFUDB5bFVZ
 
 GitHub Pages: https://jacobbaqleh1.github.io/lara-site/
 
+
+<img width="2137" height="732" alt="image" src="https://github.com/user-attachments/assets/c6e517dd-3c0b-491f-8649-e257e29f13d7" />
+
 ## Run locally
 
 ```bash
