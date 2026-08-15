@@ -35,9 +35,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  const siteBg = `url("${basePath}/images/site-bg.png")`;
-  const paintingsBg = `url("${basePath}/images/paintings-bg.png")`;
+  const siteBg = `url("/images/site-bg.png")`;
+  const paintingsBg = `url("/images/paintings-bg.png")`;
 
   return (
     <html lang="en" className={`${display.variable} ${ui.variable} h-full`}>

@@ -33,7 +33,7 @@ jobs:
       - name: Build static site
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_R2_PUBLIC_URL: "https://pub-e83ddc13f9e64a72bb36b892aa9b8989.r2.dev"
+          NEXT_PUBLIC_R2_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_R2_PUBLIC_URL }}
         run: npm run build
 
       - name: Add .nojekyll

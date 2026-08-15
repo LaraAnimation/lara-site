@@ -1,9 +1,5 @@
 import type { NextConfig } from "next";
 
-const repo = "lara-site";
-const isGithubPages = process.env.GITHUB_PAGES === "true";
-const basePath = isGithubPages ? `/${repo}` : "";
-
 /** Hostnames allowed for next/image remote assets (R2 / custom CDN). */
 function r2RemotePatterns(): NonNullable<
   NonNullable<NextConfig["images"]>["remotePatterns"]
@@ -19,7 +15,6 @@ function r2RemotePatterns(): NonNullable<
       patterns.push({
         protocol: protocol.replace(":", "") as "http" | "https",
         hostname,
-        // Keep any path prefix from the public URL (e.g. /bucket)
         pathname: pathname && pathname !== "/" ? `${pathname.replace(/\/$/, "")}/**` : "/**",
       });
     } catch {
@@ -43,19 +38,9 @@ function r2RemotePatterns(): NonNullable<
 }
 
 const nextConfig: NextConfig = {
-  output: "export",
-  // GitHub project Pages lives at /lara-site — local/dev stays at /
-  basePath: basePath || undefined,
-  assetPrefix: basePath ? `${basePath}/` : undefined,
   images: {
-    // Static export / GitHub Pages cannot run the Image Optimization server.
-    // Keep unoptimized for now; remotePatterns still validates remote src hosts.
     unoptimized: true,
     remotePatterns: r2RemotePatterns(),
-  },
-  trailingSlash: true,
-  env: {
-    NEXT_PUBLIC_BASE_PATH: basePath,
   },
 };
 
