@@ -44,3 +44,13 @@ export function r2Url(keyOrUrl: string): string {
 export function isRemoteMediaUrl(src: string): boolean {
   return /^https?:\/\//i.test(src);
 }
+
+/** Poster JPG key derived from a video object key (films/foo.mp4 → films/foo-poster.jpg). */
+export function posterKeyForVideo(videoKey: string): string {
+  return videoKey.replace(/\.(mp4|webm|mov)$/i, "-poster.jpg");
+}
+
+/** Public URL for a poster image matching an R2 video key. */
+export function r2PosterUrl(videoKey: string): string {
+  return r2Url(posterKeyForVideo(videoKey));
+}

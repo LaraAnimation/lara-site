@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { PageContact } from "@/components/PageContact";
 import { R2Video } from "@/components/media/R2Video";
-import { homeIntro, reelEmbedUrl, reelVideoSrc, site } from "@/data/site";
+import { homeIntro, reelEmbedUrl, reelPosterSrc, reelVideoSrc, site } from "@/data/site";
 import { withBasePath } from "@/lib/paths";
 
 export default function HomePage() {
@@ -47,6 +47,7 @@ export default function HomePage() {
             {reelVideoSrc ? (
               <R2Video
                 src={reelVideoSrc}
+                poster={reelPosterSrc}
                 className="home-reel__video"
                 aria-label="Lara Renaud Reel 2024"
               />
