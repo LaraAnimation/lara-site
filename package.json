@@ -7,13 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "r2:upload": "tsx scripts/upload-to-r2.ts"
+    "r2:upload": "tsx scripts/upload-to-r2.ts",
+    "r2:posters": "tsx scripts/generate-video-posters.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1107.0",
     "next": "16.3.0",
+    "pdfjs-dist": "^6.2.108",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-pageflip": "^2.0.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

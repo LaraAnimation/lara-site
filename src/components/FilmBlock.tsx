@@ -15,6 +15,7 @@ export function FilmBlock({ film }: FilmBlockProps) {
       {film.videoSrc ? (
         <R2Video
           src={film.videoSrc}
+          poster={film.posterSrc}
           className="films-media__video"
           aria-label={film.title}
         />

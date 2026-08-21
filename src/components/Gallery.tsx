@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Artwork } from "@/data/site";
 import { withBasePath } from "@/lib/paths";
+import { BookViewer } from "@/components/BookViewer";
 
 type GalleryProps = {
   items: Artwork[];
@@ -15,6 +16,7 @@ type GalleryProps = {
 
 export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
   const [index, setIndex] = useState<number | null>(null);
+  const [bookItem, setBookItem] = useState<Artwork | null>(null);
   const active = index !== null ? items[index] : null;
 
   useEffect(() => {
@@ -32,6 +34,16 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [index, items.length]);
 
+  function openItem(item: Artwork, i: number) {
+    if (item.bookSrc) {
+      setIndex(null);
+      setBookItem(item);
+      return;
+    }
+    setBookItem(null);
+    setIndex(i);
+  }
+
   return (
     <>
       <ul className={`gallery-grid ${bare ? "gallery-grid--bare" : ""}`}>
@@ -42,7 +54,7 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
                 type="button"
                 className={`gallery-thumb gallery-thumb--${tone} ${bare ? "gallery-thumb--bare" : ""}`}
                 style={{ ["--accent" as string]: item.accent }}
-                onClick={() => setIndex(i)}
+                onClick={() => openItem(item, i)}
               >
                 {item.image ? (
                   <Image
@@ -65,9 +77,19 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
                 )}
               </button>
               {item.cta ? (
-                <Link href={item.cta.href} className="gallery-cta">
-                  {item.cta.label}
-                </Link>
+                item.bookSrc || !item.cta.href ? (
+                  <button
+                    type="button"
+                    className="gallery-cta"
+                    onClick={() => openItem(item, i)}
+                  >
+                    {item.cta.label}
+                  </button>
+                ) : (
+                  <Link href={item.cta.href} className="gallery-cta">
+                    {item.cta.label}
+                  </Link>
+                )
               ) : null}
             </div>
           </li>
@@ -127,12 +149,25 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
               <p>{[active.medium, active.year].filter(Boolean).join(" ")}</p>
               {active.cta ? (
                 <p style={{ marginTop: "1rem" }}>
-                  <Link
-                    href={active.cta.href}
-                    className="gallery-cta gallery-cta--inline"
-                  >
-                    {active.cta.label}
-                  </Link>
+                  {active.bookSrc || !active.cta.href ? (
+                    <button
+                      type="button"
+                      className="gallery-cta gallery-cta--inline"
+                      onClick={() => {
+                        setIndex(null);
+                        setBookItem(active);
+                      }}
+                    >
+                      {active.cta.label}
+                    </button>
+                  ) : (
+                    <Link
+                      href={active.cta.href}
+                      className="gallery-cta gallery-cta--inline"
+                    >
+                      {active.cta.label}
+                    </Link>
+                  )}
                 </p>
               ) : null}
             </div>
@@ -149,6 +184,14 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
           </div>
         </div>
       )}
+
+      {bookItem?.bookSrc ? (
+        <BookViewer
+          src={bookItem.bookSrc}
+          title={bookItem.title}
+          onClose={() => setBookItem(null)}
+        />
+      ) : null}
     </>
   );
 }

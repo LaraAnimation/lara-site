@@ -721,12 +721,24 @@ img {
   overflow: hidden;
 }
 
+.r2-video__poster,
 .r2-video video {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: contain;
   background: #000;
+}
+
+.r2-video__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.r2-video.has-poster:not(.is-playing) video {
+  opacity: 0;
 }
 
 .r2-video__play {
@@ -1135,6 +1147,154 @@ img {
 
 .lightbox__nav--next {
   right: 0.25rem;
+}
+
+/* Illustrated book flip-viewer (e.g. Let's Talk) */
+.book-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(28, 24, 20, 0.82);
+  animation: fade 0.2s ease;
+}
+
+.book-viewer__panel {
+  position: relative;
+  width: min(1100px, 100%);
+  max-height: min(94vh, 920px);
+  overflow: auto;
+  padding: 1.25rem 1.25rem 1rem;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at top, #fff9f0 0%, transparent 55%),
+    linear-gradient(180deg, #f7f1e6 0%, #efe6d6 100%);
+  box-shadow: 0 24px 60px rgba(20, 16, 12, 0.35);
+  animation: float-in 0.28s ease;
+}
+
+.book-viewer__close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.7rem;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  font-size: 1.85rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.book-viewer__header {
+  text-align: center;
+  margin: 0.15rem 0 0.85rem;
+}
+
+.book-viewer__header h2 {
+  margin: 0;
+  font-family: var(--font-ui), sans-serif;
+  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+}
+
+.book-viewer__header p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.book-viewer__status {
+  text-align: center;
+  color: var(--muted);
+  margin: 1.5rem 0;
+}
+
+.book-viewer__status--error {
+  color: #9a3412;
+}
+
+.book-viewer__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0.5rem 2.5rem 0.75rem;
+  min-height: 320px;
+}
+
+.book-viewer__flip {
+  margin: 0 auto;
+}
+
+.book-viewer__page {
+  background: #fff;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(40, 30, 20, 0.06);
+}
+
+.book-viewer__page img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.book-viewer__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(20, 16, 12, 0.18);
+}
+
+.book-viewer__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.book-viewer__nav--prev {
+  left: 0.15rem;
+}
+
+.book-viewer__nav--next {
+  right: 0.15rem;
+}
+
+.book-viewer__pager {
+  text-align: center;
+  margin: 0.15rem 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-family: var(--font-ui), sans-serif;
+}
+
+button.gallery-cta {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  appearance: none;
+}
+
+@media (max-width: 720px) {
+  .book-viewer__panel {
+    padding: 1rem 0.75rem 0.75rem;
+  }
+
+  .book-viewer__stage {
+    padding: 0.35rem 2rem 0.5rem;
+  }
 }
 
 /* About / Contact pages */
