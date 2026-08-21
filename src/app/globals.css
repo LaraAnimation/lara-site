@@ -1163,6 +1163,8 @@ img {
 
 .book-viewer__panel {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(1100px, 100%);
   max-height: min(94vh, 920px);
   overflow: auto;
@@ -1189,6 +1191,7 @@ img {
 }
 
 .book-viewer__header {
+  flex-shrink: 0;
   text-align: center;
   margin: 0.15rem 0 0.85rem;
 }
@@ -1219,12 +1222,44 @@ img {
   position: relative;
   display: grid;
   place-items: center;
+  flex: 1 1 auto;
   padding: 0.5rem 2.5rem 0.75rem;
   min-height: 320px;
 }
 
 .book-viewer__flip {
   margin: 0 auto;
+  max-width: 100%;
+}
+
+/* page-flip structural styles (package CSS is not auto-imported) */
+.book-viewer__flip.stf__parent,
+.book-viewer .stf__parent {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  transform: translateZ(0);
+  touch-action: pan-y;
+}
+
+.book-viewer .stf__wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.book-viewer .stf__block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  perspective: 2000px;
+}
+
+.book-viewer .stf__item {
+  display: none;
+  position: absolute;
+  transform-style: preserve-3d;
 }
 
 .book-viewer__page {
@@ -1273,6 +1308,7 @@ img {
 }
 
 .book-viewer__pager {
+  flex-shrink: 0;
   text-align: center;
   margin: 0.15rem 0 0.25rem;
   color: var(--muted);
@@ -1288,12 +1324,48 @@ button.gallery-cta {
 }
 
 @media (max-width: 720px) {
+  .book-viewer {
+    padding: 0.35rem;
+    align-items: stretch;
+  }
+
   .book-viewer__panel {
-    padding: 1rem 0.75rem 0.75rem;
+    width: 100%;
+    max-height: none;
+    height: 100%;
+    min-height: 100dvh;
+    border-radius: 6px;
+    padding: 2.1rem 0.45rem 0.55rem;
+    overflow: hidden;
+  }
+
+  .book-viewer__header {
+    margin: 0 0 0.35rem;
+  }
+
+  .book-viewer__header h2 {
+    font-size: 1.05rem;
+  }
+
+  .book-viewer__header p {
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
   }
 
   .book-viewer__stage {
-    padding: 0.35rem 2rem 0.5rem;
+    min-height: 0;
+    padding: 0.15rem 2.1rem 0.25rem;
+  }
+
+  .book-viewer__nav {
+    width: 2.15rem;
+    height: 2.15rem;
+    font-size: 1.55rem;
+  }
+
+  .book-viewer__pager {
+    margin: 0.1rem 0 0;
+    font-size: 0.82rem;
   }
 }
 
