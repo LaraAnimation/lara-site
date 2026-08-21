@@ -86,7 +86,9 @@ function extractPoster(videoPath: string, posterPath: string, atSeconds = 2): vo
       String(atSeconds),
       "-i",
       videoPath,
-      "-vframes",
+      "-frames:v",
+      "1",
+      "-update",
       "1",
       "-q:v",
       "2",
@@ -120,7 +122,7 @@ async function uploadPoster(key: string, filePath: string): Promise<void> {
 async function main() {
   const { dryRun } = parseArgs(process.argv.slice(2));
   const hasR2Creds = Boolean(
-    process.env.R2_ACCOUNT_ID &&
+    process.env.CLOUDFLARE_ACCOUNT_ID &&
       process.env.R2_ACCESS_KEY_ID &&
       process.env.R2_SECRET_ACCESS_KEY &&
       process.env.R2_BUCKET_NAME,
