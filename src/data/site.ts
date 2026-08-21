@@ -183,8 +183,10 @@ export type Artwork = {
   year: string;
   accent: string;
   image?: string;
+  /** Optional illustrated book PDF — opens a flip-through viewer on click */
+  bookSrc?: string;
   /** Optional CTA overlay on the thumbnail (e.g. Let's Talk) */
-  cta?: { label: string; href: string };
+  cta?: { label: string; href?: string };
 };
 
 export const paintings: Artwork[] = [
@@ -307,7 +309,8 @@ export const paintings: Artwork[] = [
     year: "",
     accent: "#e0893a",
     image: "/images/paintings/lets-talk.png",
-    cta: { label: "Let's Talk Illustrations", href: "/contact" },
+    bookSrc: "/pdfs/lets-talk.pdf",
+    cta: { label: "Read the book" },
   },
 ];
 
