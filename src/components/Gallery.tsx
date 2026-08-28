@@ -10,9 +10,14 @@ import { BookViewer } from "@/components/BookViewer";
 type GalleryProps = {
   items: Artwork[];
   tone?: "color" | "mono";
-  /** Hide title/medium under thumbs (paintings page style) */
+  /** Hide title/medium under thumbs; show hover overlay instead */
   bare?: boolean;
 };
+
+function artworkDetailLine(item: Artwork) {
+  const size = item.dimensions ? `(${item.dimensions})` : "";
+  return [size, item.medium].filter(Boolean).join(" ");
+}
 
 export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
   const [index, setIndex] = useState<number | null>(null);
@@ -67,7 +72,15 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
                 ) : (
                   <span className="gallery-thumb__art" aria-hidden />
                 )}
-                {!bare && (
+                {bare ? (
+                  <span className="gallery-thumb__overlay" aria-hidden>
+                    <strong>{item.title}</strong>
+                    {artworkDetailLine(item) ? (
+                      <span>{artworkDetailLine(item)}</span>
+                    ) : null}
+                    {item.year ? <span>{item.year}</span> : null}
+                  </span>
+                ) : (
                   <span className="gallery-thumb__meta">
                     <strong>{item.title}</strong>
                     <span>
@@ -146,7 +159,11 @@ export function Gallery({ items, tone = "color", bare = false }: GalleryProps) {
             )}
             <div className="lightbox__copy">
               <h2>{active.title}</h2>
-              <p>{[active.medium, active.year].filter(Boolean).join(" ")}</p>
+              <p>
+                {[artworkDetailLine(active), active.year]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
               {active.cta ? (
                 <p style={{ marginTop: "1rem" }}>
                   {active.bookSrc || !active.cta.href ? (

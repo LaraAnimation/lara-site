@@ -936,6 +936,7 @@ img {
 }
 
 .gallery-thumb {
+  position: relative;
   width: 100%;
   border: 0;
   background: white;
@@ -958,7 +959,6 @@ img {
 .gallery-thumb--bare:hover {
   transform: none;
   box-shadow: none;
-  opacity: 0.96;
 }
 
 .gallery-thumb:hover {
@@ -1001,6 +1001,41 @@ img {
 .gallery-thumb__meta span {
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.gallery-thumb__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 10% 12% 0 10%;
+  background: rgba(0, 0, 0, 0.52);
+  color: #fff;
+  font-family: var(--font-ui), sans-serif;
+  text-align: left;
+  line-height: 1.35;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.gallery-thumb:hover .gallery-thumb__overlay,
+.gallery-thumb:focus-visible .gallery-thumb__overlay {
+  opacity: 1;
+}
+
+.gallery-thumb__overlay strong {
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  font-weight: 700;
+}
+
+.gallery-thumb__overlay span {
+  font-size: clamp(0.72rem, 1.6vw, 0.88rem);
+  font-weight: 400;
 }
 
 .gallery-cta {
@@ -1135,18 +1170,21 @@ img {
   transform: translateY(-50%);
   border: 0;
   background: transparent;
-  font-size: 2.4rem;
+  font-size: clamp(3rem, 6vw, 4.25rem);
   cursor: pointer;
   color: var(--ink);
   line-height: 1;
+  padding: 0.35rem 0.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 }
 
 .lightbox__nav--prev {
-  left: 0.25rem;
+  left: 0.15rem;
 }
 
 .lightbox__nav--next {
-  right: 0.25rem;
+  right: 0.15rem;
 }
 
 /* Illustrated book flip-viewer (e.g. Let's Talk) */
