@@ -6,6 +6,8 @@ import { withBasePath } from "@/lib/paths";
 
 const HTMLFlipBook = dynamic(() => import("react-pageflip"), { ssr: false });
 
+const NARROW_BREAKPOINT = 720;
+
 type BookViewerProps = {
   src: string;
   title: string;
@@ -19,20 +21,107 @@ type FlipBookApi = {
   };
 };
 
+type PageDims = {
+  width: number;
+  height: number;
+};
+
+function measureViewport() {
+  if (typeof window === "undefined") {
+    return { width: 1024, height: 768 };
+  }
+  return { width: window.innerWidth, height: window.innerHeight };
+}
+
+/** Fit one page into the modal stage; on phones fill nearly the full viewport. */
+function computePageDims(
+  aspect: number,
+  viewport: { width: number; height: number },
+): PageDims {
+  const narrow = viewport.width < NARROW_BREAKPOINT;
+  const chromeY = narrow ? 140 : 168;
+  const chromeX = narrow ? 64 : 120;
+  const maxW = Math.max(200, viewport.width - chromeX);
+  const maxH = Math.max(260, viewport.height - chromeY);
+
+  if (narrow) {
+    let width = maxW;
+    let height = Math.round(width / aspect);
+    if (height > maxH) {
+      height = maxH;
+      width = Math.round(height * aspect);
+    }
+    return {
+      width: Math.max(200, width),
+      height: Math.max(260, height),
+    };
+  }
+
+  const width = Math.min(
+    Math.round(maxW * 0.46),
+    Math.floor(viewport.width * 0.42),
+    420,
+  );
+  const height = Math.min(Math.round(width / aspect), maxH);
+  return {
+    width: Math.max(260, width),
+    height: Math.max(320, height),
+  };
+}
+
 export function BookViewer({ src, title, onClose }: BookViewerProps) {
   const [pages, setPages] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [dims, setDims] = useState({ width: 380, height: 500 });
+  const [isNarrow, setIsNarrow] = useState(
+    () => measureViewport().width < NARROW_BREAKPOINT,
+  );
+  const [singlePage, setSinglePage] = useState(
+    () => measureViewport().width < NARROW_BREAKPOINT,
+  );
+  const [layoutKey, setLayoutKey] = useState("init");
+  const [dims, setDims] = useState<PageDims>({ width: 380, height: 500 });
+  const [viewportWidth, setViewportWidth] = useState(
+    () => measureViewport().width,
+  );
   const bookRef = useRef<FlipBookApi | null>(null);
+  const aspectRef = useRef(0.76);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
+    };
+  }, []);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const applyLayout = () => {
+      const vp = measureViewport();
+      const next = computePageDims(aspectRef.current, vp);
+      const narrow = vp.width < NARROW_BREAKPOINT;
+      setViewportWidth(vp.width);
+      setDims(next);
+      setIsNarrow(narrow);
+      setSinglePage(narrow);
+      // react-pageflip only reads size props on mount — remount on layout changes
+      setLayoutKey(`${narrow ? "n" : "w"}-${next.width}x${next.height}`);
+    };
+
+    const onResize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(applyLayout, 120);
+    };
+
+    applyLayout();
+    window.addEventListener("resize", onResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -57,10 +146,19 @@ export function BookViewer({ src, title, onClose }: BookViewerProps) {
 
         const urls: string[] = [];
         const total = doc.numPages;
-        const viewportCap =
+        const vp = measureViewport();
+        const dpr =
           typeof window !== "undefined"
-            ? Math.min(860, Math.max(480, window.innerWidth * 0.4))
-            : 520;
+            ? Math.min(2.5, window.devicePixelRatio || 1)
+            : 1;
+        // Sharp enough for a full-width phone page (not half a desktop spread).
+        const viewportCap = Math.min(
+          1100,
+          Math.max(
+            560,
+            vp.width * (vp.width < NARROW_BREAKPOINT ? 1.2 : 0.55) * dpr,
+          ),
+        );
 
         for (let i = 1; i <= total; i++) {
           const pdfPage = await doc.getPage(i);
@@ -68,34 +166,23 @@ export function BookViewer({ src, title, onClose }: BookViewerProps) {
 
           const base = pdfPage.getViewport({ scale: 1 });
           const scale = viewportCap / base.width;
-          const viewport = pdfPage.getViewport({ scale });
+          const pageViewport = pdfPage.getViewport({ scale });
 
           if (i === 1 && !cancelled) {
-            const maxSingle =
-              typeof window !== "undefined"
-                ? Math.min(
-                    Math.round(viewport.width),
-                    window.innerWidth < 720
-                      ? window.innerWidth - 56
-                      : Math.floor(window.innerWidth * 0.42),
-                  )
-                : Math.round(viewport.width);
-            const width = Math.max(240, maxSingle);
-            const height = Math.max(
-              300,
-              Math.min(
-                Math.round(width * (viewport.height / viewport.width)),
-                typeof window !== "undefined"
-                  ? Math.floor(window.innerHeight * 0.72)
-                  : Math.round(viewport.height),
-              ),
-            );
-            setDims({ width, height });
+            const aspect = base.width / base.height;
+            aspectRef.current = aspect;
+            const size = computePageDims(aspect, vp);
+            const narrow = vp.width < NARROW_BREAKPOINT;
+            setViewportWidth(vp.width);
+            setDims(size);
+            setIsNarrow(narrow);
+            setSinglePage(narrow);
+            setLayoutKey(`${narrow ? "n" : "w"}-${size.width}x${size.height}`);
           }
 
           const canvas = document.createElement("canvas");
-          canvas.width = Math.floor(viewport.width);
-          canvas.height = Math.floor(viewport.height);
+          canvas.width = Math.floor(pageViewport.width);
+          canvas.height = Math.floor(pageViewport.height);
           const ctx = canvas.getContext("2d");
           if (!ctx) throw new Error("Canvas unsupported");
 
@@ -103,11 +190,11 @@ export function BookViewer({ src, title, onClose }: BookViewerProps) {
             .render({
               canvasContext: ctx,
               canvas,
-              viewport,
+              viewport: pageViewport,
             })
             .promise;
 
-          urls.push(canvas.toDataURL("image/jpeg", 0.88));
+          urls.push(canvas.toDataURL("image/jpeg", 0.9));
           if (cancelled) return;
           setProgress(Math.round((i / total) * 100));
         }
@@ -148,13 +235,19 @@ export function BookViewer({ src, title, onClose }: BookViewerProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose, flipPrev, flipNext]);
 
+  // Force portrait in stretch mode when blockWidth < minWidth * 2.
+  const minWidth = isNarrow
+    ? Math.max(dims.width, Math.ceil(viewportWidth * 0.55))
+    : 240;
+
   const pageCount = pages.length;
-  const pageLabel =
-    pageCount <= 1
-      ? pageCount === 1
-        ? "1 / 1"
-        : ""
-      : `${Math.min(currentPage + 1, pageCount)}–${Math.min(currentPage + 2, pageCount)} / ${pageCount}`;
+  const pageLabel = (() => {
+    if (pageCount <= 0) return "";
+    if (pageCount === 1 || singlePage) {
+      return `${Math.min(currentPage + 1, pageCount)} / ${pageCount}`;
+    }
+    return `${Math.min(currentPage + 1, pageCount)}–${Math.min(currentPage + 2, pageCount)} / ${pageCount}`;
+  })();
 
   return (
     <div
@@ -204,15 +297,16 @@ export function BookViewer({ src, title, onClose }: BookViewerProps) {
             </button>
 
             <HTMLFlipBook
+              key={layoutKey}
               ref={bookRef}
               className="book-viewer__flip"
               style={{ margin: "0 auto" }}
               width={dims.width}
               height={dims.height}
-              size="stretch"
-              minWidth={240}
+              size={isNarrow ? "fixed" : "stretch"}
+              minWidth={minWidth}
               maxWidth={dims.width}
-              minHeight={300}
+              minHeight={Math.min(260, dims.height)}
               maxHeight={dims.height}
               showCover
               mobileScrollSupport
@@ -229,6 +323,15 @@ export function BookViewer({ src, title, onClose }: BookViewerProps) {
               swipeDistance={30}
               disableFlipByClick={false}
               onFlip={(e: { data: number }) => setCurrentPage(e.data)}
+              onInit={(e: { data: { page?: number; mode?: string } }) => {
+                const mode = e?.data?.mode;
+                if (mode === "portrait" || mode === "landscape") {
+                  setSinglePage(mode === "portrait");
+                }
+              }}
+              onChangeOrientation={(e: { data: string }) => {
+                setSinglePage(e.data === "portrait");
+              }}
             >
               {pages.map((url, i) => (
                 <div
